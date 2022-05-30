@@ -4,10 +4,102 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <script defer src="index.js"></script>
+    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/styles.css">
     <title>Greenfox player</title>
 </head>
 <body>
-    
+    <main>
+        <div id="logo">
+            <img src="./assets/foxplayer.png" alt="">
+            <div class="buttonContainer">
+                <h1>Playlists</h1>
+                <button id="createPlaylist">+</button>
+            </div>
+        </div>
+
+        <div id="currentPlayback" class="buttonContainer">
+            <div>
+                <h2 id="currentTitle">currently playing song</h2>
+                <p id="currentTitleArtist">by someone</h2>
+            </div>
+                <button id="addToPlaylist">+</button>
+                <button id="makeFavourite">
+                    <img src="./assets/star.svg" alt="add to favourites">
+                </button>
+        </div>
+
+        <div id="controls">
+            
+
+            <div id="playbackBtns">
+                <button id="previous">
+                    <img src="./assets/rewind.svg" alt="rewind to start or play previous">
+                </button>
+                <button id="playPause">
+                    <img src="./assets/play.svg" alt="let the music play">
+                </button>
+                <button id="next">
+                    <img src="./assets/forward.svg" alt="play next song">
+                </button>
+            </div>
+
+            <div id="search">
+                <div id="elapsed">00:00</div>
+                <input id="searchBar" type="range">
+                <div id="total">00:00</div>
+            </div>
+
+            <div id="lolRandom">
+                <button id="shuffle">
+                    <img src="./assets/shuffle.svg" alt="play random song next">
+                </button>
+            </div>
+
+            <div id="volume">
+                <button id="mute">
+                    <img src="./assets/volume.svg" alt="mute or unmute">
+                </button>
+                <div>
+                    <input type="range">
+                </div>
+            </div>
+
+        </div>
+        <ul id="currentPlaylist">
+            <li class="song">
+                <span class="order">1.</span>
+                <span class="title">this is a song</span>
+                <span class="duration">3:33</span>
+            </li>
+            <li class="song">
+                <span class="order">2.</span>
+                <span class="title">this is another song</span>
+                <span class="duration">13:33</span>
+            </li>
+        </ul>
+
+        <div id="playlists">
+            <ul>
+                <li class="playlist">
+                    All tracks
+                </li>
+                <li class="playlist">
+                    Favourites
+                </li>
+                <li class="playlist buttonContainer">
+                    <span class="title">a custom playlist</span>
+                    <button class="deletePlaylist">X</button>
+                </li>
+            </ul>
+
+        </div>
+
+        <div id="artwork">
+            <img src="./assets/music-placeholder.png" alt="album cover or placeholder image">
+        </div>
+        <audio src="#">if you can see this your browser doesn't support audio element :(</audio>
+    </main>
 </body>
 </html>
