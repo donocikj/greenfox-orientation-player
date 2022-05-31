@@ -4,19 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script defer src="index.js"></script>
-    <link rel="stylesheet" href="styles/reset.css">
-    <link rel="stylesheet" href="styles/styles.css">
+    <script src="/public/range-slider.js"></script>
+    <script defer src="/public/index.js"></script>
+    <link rel="stylesheet" href="/public/styles/reset.css">
+    <link rel="stylesheet" href="/public/styles/styles.css">
+    <link rel="stylesheet" href="/public/styles/range-slider.css">
     <title>Greenfox player</title>
 </head>
 <body>
+    
     <main>
         <div id="logo">
-            <img src="./assets/foxplayer.png" alt="">
-            <div class="buttonContainer">
-                <h1>Playlists</h1>
-                <button id="createPlaylist">+</button>
-            </div>
+            <img src="/public/assets/foxplayer.png" alt="">
+        </div>
+        <div id="playlistHeader" class="buttonContainer">
+            <h1>Playlists</h1>
+            <button id="createPlaylist">+</button>
         </div>
 
         <div id="currentPlayback" class="buttonContainer">
@@ -26,43 +29,43 @@
             </div>
                 <button id="addToPlaylist">+</button>
                 <button id="makeFavourite">
-                    <img src="./assets/star.svg" alt="add to favourites">
+                    <img src="/public/assets/star.svg" alt="add to favourites">
                 </button>
         </div>
 
         <div id="controls">
             
-
+            
             <div id="playbackBtns">
                 <button id="previous">
-                    <img src="./assets/rewind.svg" alt="rewind to start or play previous">
+                    <img src="/public/assets/rewind.svg" alt="rewind to start or play previous">
                 </button>
                 <button id="playPause">
-                    <img src="./assets/play.svg" alt="let the music play">
+                    <img src="/public/assets/play.svg" alt="let the music play">
                 </button>
                 <button id="next">
-                    <img src="./assets/forward.svg" alt="play next song">
+                    <img src="/public/assets/forward.svg" alt="play next song">
                 </button>
             </div>
 
             <div id="search">
-                <div id="elapsed">00:00</div>
-                <input id="searchBar" type="range">
-                <div id="total">00:00</div>
+                <div class="timer" id="elapsed">00:00</div>
+                <input id="searchBar" type="range" min ="0" max="100" step="0.1" value="0">
+                <div class="timer"id="total">00:00</div>
             </div>
 
             <div id="lolRandom">
                 <button id="shuffle">
-                    <img src="./assets/shuffle.svg" alt="play random song next">
+                    <img src="/public/assets/shuffle.svg" alt="play random song next">
                 </button>
             </div>
 
             <div id="volume">
                 <button id="mute">
-                    <img src="./assets/volume.svg" alt="mute or unmute">
+                    <img src="/public/assets/volume.svg" alt="mute or unmute">
                 </button>
                 <div>
-                    <input type="range">
+                    <input id="volumeBar" type="range">
                 </div>
             </div>
 
@@ -97,9 +100,9 @@
         </div>
 
         <div id="artwork">
-            <img src="./assets/music-placeholder.png" alt="album cover or placeholder image">
+            <img src="/public/assets/music-placeholder.png" alt="album cover or placeholder image">
         </div>
-        <audio src="#">if you can see this your browser doesn't support audio element :(</audio>
+        <audio src="/library/Ars_Sonor_-_02_-_Never_Give_Up.mp3">if you can see this your browser doesn't support audio element :(</audio>
     </main>
 </body>
 </html>
