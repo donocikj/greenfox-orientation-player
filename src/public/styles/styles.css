@@ -24,6 +24,10 @@ main * {
     background-color: inherit;
 }
 
+.template {
+    display: none;
+}
+
 button {
     border: none;
 }
@@ -177,9 +181,6 @@ ul >:hover {
 }
 
 
-
-
-
 #playlists {
     grid-area: 3 / 1 / 4 / 3;
 }
@@ -191,4 +192,12 @@ ul >:hover {
 #artwork img {
     max-height: 12rem;
     max-width: 12rem;
+}
+
+
+/* */
+
+.highlighted {
+    background-color:rgb(21, 59, 38);
+    color: white;
 }

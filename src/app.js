@@ -16,6 +16,8 @@ app.use(`/public`, express.static("./src/public"));
 app.use(`/library`, express.static(PATH_TO_LIBRARY));
 
 app.get(`/`, (req, res)=> {
+    //console.log(req);
+    //console.log(req.query);
     res.status(200).sendFile(__dirname + `/public/index.html`);
 })
 
@@ -78,14 +80,14 @@ function getAllTracks(req, res) {
             id: 21,
             title: "Never Give Up",
             artist: "Ars Sonor",
-            duration: 545,
+            duration: 135,
             path: "/library/Ars_Sonor_-_02_-_Never_Give_Up.mp3"
         },
         {
             id: 412,
             title: "Purple Drift",
             artist: "Organoid",
-            duration: 312.12,
+            duration: 208,
             path: "/library/Organoid_-_09_-_Purple_Drift.mp3"
         }
     ]);
@@ -101,7 +103,7 @@ function getPlaylistTracksByPlaylistId(req, res) {
         id: 21,
         title: "Never Give Up",
         artist: "Ars Sonor",
-        duration: 545,
+        duration: 135,
         path: "/library/Ars_Sonor_-_02_-_Never_Give_Up.mp3"
     }]);
 

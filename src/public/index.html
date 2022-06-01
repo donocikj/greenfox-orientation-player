@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/public/range-slider.js"></script>
+    <script src="/public/mustache.js"></script>
     <script defer src="/public/index.js"></script>
     <link rel="stylesheet" href="/public/styles/reset.css">
     <link rel="stylesheet" href="/public/styles/styles.css">
@@ -65,36 +66,18 @@
                     <img src="/public/assets/volume.svg" alt="mute or unmute">
                 </button>
                 <div>
-                    <input id="volumeBar" type="range">
+                    <input id="volumeBar" type="range" min="0" max="1.0" step="0.001" value="1.0">
                 </div>
             </div>
 
         </div>
         <ul id="currentPlaylist">
-            <li class="song">
-                <span class="order">1.</span>
-                <span class="title">this is a song</span>
-                <span class="duration">3:33</span>
-            </li>
-            <li class="song">
-                <span class="order">2.</span>
-                <span class="title">this is another song</span>
-                <span class="duration">13:33</span>
-            </li>
+ 
         </ul>
 
         <div id="playlists">
             <ul>
-                <li class="playlist">
-                    All tracks
-                </li>
-                <li class="playlist">
-                    Favourites
-                </li>
-                <li class="playlist buttonContainer">
-                    <span class="title">a custom playlist</span>
-                    <button class="deletePlaylist">X</button>
-                </li>
+                
             </ul>
 
         </div>
@@ -102,7 +85,23 @@
         <div id="artwork">
             <img src="/public/assets/music-placeholder.png" alt="album cover or placeholder image">
         </div>
-        <audio src="/library/Ars_Sonor_-_02_-_Never_Give_Up.mp3">if you can see this your browser doesn't support audio element :(</audio>
+
+        <audio src="#">if you can see this your browser doesn't support audio element :(</audio>
     </main>
+
+    <div class="template" id="playlistTemplate">
+        <li class="playlist buttonContainer" data-id="{{id}}">
+            <span class="title">{{title}}</span>
+            {{#deletable}}<button class="deletePlaylist">X</button>{{/deletable}}
+        </li>
+    </div>
+
+    <div class="template" id="trackTemplate">
+        <li class="song" data-id="{{id}}">
+            <span class="order">{{order}}</span>
+            <span class="title">{{title}}</span>
+            <span class="duration">{{duration}}</span>
+        </li>
+    </div>
 </body>
 </html>
