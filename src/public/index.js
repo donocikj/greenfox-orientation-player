@@ -175,6 +175,20 @@ function createPlaylist(e) {
     console.log(`requesting creation of new playlist, expected id: ${playlists.length} .... NOT YET IMPLEMENTED`)
     //grab up to date information on playlists?
 
+    vex.dialog.buttons.YES.text = "Create playlist";
+    vex.dialog.buttons.NO.text = "Cancel";
+
+    vex.dialog.prompt({
+        message: `Please, enter name of the new playlist`,
+        placeholder: `new playlist`,
+        callback: (value) => {
+            if(value === false) 
+                return;
+            else
+                requestPlaylistCreation(value);
+        }
+    })
+
     // //instantiate empty
     // let newListData = {
     //     title: promptInput()
@@ -465,6 +479,23 @@ function PlayPauseIconSwitch() {
 
 }
 
+//sends request to backend intended to create an empty playlist of given choice
+function requestPlaylistCreation(title) {
+
+    fetch(`/playlists`, {
+        method: `POST`,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            title: title
+        })
+    })
+        .then(response => response.json())
+        .then(message => console.log(message))
+        .catch(error => console.error(error))
+
+}
 
 
 

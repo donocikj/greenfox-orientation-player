@@ -22,6 +22,7 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "musicmetadata": "^2.0.5",
+    "mustache": "^4.2.0",
     "mysql": "^2.18.1",
     "rangeslider-pure": "^0.4.11",
     "vex": "^0.0.4",

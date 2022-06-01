@@ -15,6 +15,10 @@ const app = express();
 app.use(`/public`, express.static("./src/public"));
 app.use(`/library`, express.static(PATH_TO_LIBRARY));
 
+app.use(`/import`, express.static(`./node_modules`));
+
+
+
 app.get(`/`, (req, res)=> {
     //console.log(req);
     //console.log(req.query);
