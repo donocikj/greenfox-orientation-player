@@ -188,14 +188,6 @@ function createPlaylist(e) {
                 requestPlaylistCreation(value);
         }
     })
-
-    // //instantiate empty
-    // let newListData = {
-    //     title: promptInput()
-    // }
-
-    // requestPlaylistCreation(newListData);
-
 }
 
 //add song
@@ -206,9 +198,7 @@ function addToPlaylist(e) {
     //refesh playlist and library data?
     
     //ask for selection of playlist
-
-    // requestPlaylistUpdate(data)
-
+    offerChoiceOfPlaylistsToAdd(mediaElement.getAttribute(`data-id`));
 }
 
 
@@ -496,6 +486,70 @@ function requestPlaylistCreation(title) {
         .catch(error => console.error(error))
 
 }
+
+//brings up vex dialog with choice of mutable playlists
+function offerChoiceOfPlaylistsToAdd(id) {
+    vex.dialog.open({
+        message: `Please, select a playlist to add the track to:`,
+        input: [
+            `<select id="playlistSelect" name="playlistChoice">`,
+            renderPlaylistList(),
+            `</select>`
+        ].join(``),
+        callback: (data) => {
+            if(!data) {
+                return console.log(`cancelled`);
+            }
+            console.log(data);
+            requestAddToPlaylist(data.playlistChoice,id);
+        }
+    })
+}
+
+function requestAddToPlaylist(playlist_id, track_id) {
+    console.log(`adding track ${library[track_id].title} to playlist ${playlists[playlist_id].title}`);
+
+    fetch(`/playlist-tracks/${playlist_id}`,{
+        method: `POST`,
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: {
+            id: track_id,
+            title: library[track_id].title,
+            playlist_title: playlists[playlist_id].title
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+        })
+        .catch(error => console.error(error))
+
+}
+
+
+//supplies options of playlists available to have a track added
+function renderPlaylistList() {
+    //return `<option value="">test option</option>`
+
+    const template = `{{#playlists}}<option value="{{id}}">{{title}}</option>{{/playlists}}`;
+    const view = {
+        playlists: playlists
+            .filter(playlist => playlist.system_rank === 0)
+            .map(playlist => { 
+                return {
+                    id: playlist.id,
+                    title: playlist.title
+                }
+            })
+    }
+
+    return mustache.render(template, view);
+    
+}
+
+
 
 
 
