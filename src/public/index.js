@@ -20,7 +20,7 @@ const library = {};
 const favourites = [];
 
 //playlists
-const playlists = [];
+const playlists = {};
 let currentPlaylist = [];
 
 const selectedElements = {playlist: null, track: null};
@@ -108,7 +108,7 @@ async function initializeAllTheThings(e) {
         .then(()=> getPlaylists()) 
         .then(()=> setPlaylist(0))  //alternative - local storage playlist id?
         //select first song
-        .then(() => selectSong(21))// placeholder - remove, replace
+        //.then(() => selectSong(21))// placeholder - remove, replace
         .catch(error=> console.error(error));
 
 }
@@ -172,7 +172,7 @@ async function updateTime(e) {
 //ask for name and then request creation of new playlist at the back end
 function createPlaylist(e) {
 
-    console.log(`requesting creation of new playlist, expected id: ${playlists.length} .... NOT YET IMPLEMENTED`)
+    console.log(`requesting creation of new playlist`)
     //grab up to date information on playlists?
 
     vex.dialog.buttons.YES.text = "Create playlist";
@@ -230,7 +230,7 @@ function setVolume(e) {
 
 
 function playlistClicked(e) {
-    console.log(e);
+    //console.log(e);
     //console.log(e.target.closest(`li`).getAttribute(`data-id`));
     //console.log(e.target.parent(`div`));
     const listItem = e.target.closest(`li`);
@@ -241,6 +241,7 @@ function playlistClicked(e) {
     //delete playlist?
     if (e.target.classList.contains(`deletePlaylist`)) {
         console.log(`playlist ${id} selected for deletion`);
+        requestPlaylistDeletion(id);
         //call the delete endpoint
     } else {
         console.log(`selected playlist ${id}: ${playlists[id].title}`);
@@ -326,7 +327,8 @@ async function getPlaylists() {
         .then(response => response.json())
         .then(data => {
             //console.log(data);
-            data.forEach(playlist => playlists.push(playlist));
+            playlistsClear();
+            data.forEach(playlist => playlists[playlist.id]=playlist);
         // })
         // .then(() => {
             //console.log(playlists); 
@@ -359,7 +361,7 @@ function populatePlaylists() {
     populateList(
         document.querySelector(`#playlists ul`),
         `{{#playlists}} ${document.querySelector(`#playlistTemplate`).innerHTML} {{/playlists}}`,
-        { playlists: playlists.map((playlist) => {
+        { playlists: Object.values(playlists).map((playlist) => {
             return {
                 id: playlist.id,
                 title: playlist.title,
@@ -458,6 +460,16 @@ function mapClear(object) {
     for(let item in object) delete object[item];
 }
 
+function playlistsClear() {
+    mapClear(playlists);
+    playlists[0] = {
+        id: 0,
+        title: `All Tracks`,
+        system_rank: 1
+    };
+    //favourites list goes here
+}
+
 
 //sets the icon of play button accordingly to paused state of the media
 function PlayPauseIconSwitch() {
@@ -514,17 +526,18 @@ function requestAddToPlaylist(playlist_id, track_id) {
         headers: {
             "Content-Type":"application/json"
         },
-        body: {
+        body: JSON.stringify({
             id: track_id,
             title: library[track_id].title,
             playlist_title: playlists[playlist_id].title
-        }
+        })
     })
         .then(response => response.json())
         .then(data => {
             console.log(data)
         })
-        .catch(error => console.error(error))
+        //.then(()=> location.reload(true))
+        .catch(error => console.error(error));
 
 }
 
@@ -535,7 +548,7 @@ function renderPlaylistList() {
 
     const template = `{{#playlists}}<option value="{{id}}">{{title}}</option>{{/playlists}}`;
     const view = {
-        playlists: playlists
+        playlists: Object.values(playlists)
             .filter(playlist => playlist.system_rank === 0)
             .map(playlist => { 
                 return {
@@ -547,6 +560,17 @@ function renderPlaylistList() {
 
     return mustache.render(template, view);
     
+}
+
+function requestPlaylistDeletion(id) {
+
+    fetch(`/playlists/${id}`, {
+        method: `DELETE`,
+    })
+        //.then(response => console.log(response.status))
+        //.then(message => console.log(message))
+        //.then(()=>location.reload(true))
+        .catch(error => console.error(error));
 }
 
 

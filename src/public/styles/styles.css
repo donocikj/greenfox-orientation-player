@@ -7,7 +7,9 @@ main {
     margin: 2vh 2vw;
     padding: 7px;
     width: 96vw;
+    max-width: 96vw;
     height: 96vh;
+    max-height: 96vh;
     display: grid;
     grid-template:  5rem 8rem auto 7rem / 1fr 12rem 2fr;
     gap: 7px;
@@ -148,6 +150,7 @@ button {
 
 #currentPlaylist {
     grid-area: 2 / 3 / 4 / 4;
+    overflow-y: auto;
 }
 
     .song{
@@ -185,6 +188,7 @@ ul >:hover {
 
 #playlists {
     grid-area: 3 / 1 / 4 / 3;
+    overflow-y: auto;
 }
 
 #artwork {
