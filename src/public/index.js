@@ -11,7 +11,7 @@ const volSlider = document.querySelector('#volumeBar');
 //media element
 const mediaElement = document.querySelector(`audio`);
 //console.log(mediaElement);
-console.log(mediaElement.volume);
+//console.log(mediaElement.volume);
 
 //song library
 const library = {};
@@ -22,6 +22,10 @@ const favourites = [];
 //playlists
 const playlists = {};
 let currentPlaylist = [];
+
+//playback queue
+let playbackQueue = [];
+let queuePos = 0;
 
 const selectedElements = {playlist: null, track: null};
 
@@ -64,6 +68,12 @@ let muted = false;
 
         mediaElement.addEventListener(`timeupdate`, updateTime);
         console.log(`Listening to media 'timeupdate'...`);
+
+        mediaElement.addEventListener(`ended`, playbackNext)
+        console.log(`Listening to ended event`);
+        mediaElement.addEventListener(`ended`, playbackToggle)
+        console.log(`adding another one to keep playing`)
+        
 
         //add playlist
         document.querySelector(`#createPlaylist`).addEventListener(`click`, createPlaylist);
@@ -130,10 +140,14 @@ function playbackToggle() {
 //return to start
 //else select previous title in playlist
 function playbackRewind() {
-    if(mediaElement.currentTime !== 0) {
+    if(mediaElement.currentTime > 0.5) {
         mediaElement.currentTime = 0;
         searchBar.value = 0;
     } else {
+        console.log(`rewinding to previous song from ${queuePos}`);
+        if(queuePos > 1) {
+            selectSong(playbackQueue[queuePos-2].id, parseInt(queuePos)-1);
+        }
         //retrieve position of song in playlist
         //get id of the next one
         //select it
@@ -142,9 +156,14 @@ function playbackRewind() {
 
 //select next title in playlist
 function playbackNext() {
-    //retrieve position of song in playlist
-    //get id of the next one
-    //select it
+    console.log(`calling "NEXT" with ${queuePos}`);
+    //console.log(playbackQueue);
+    if (queuePos < playbackQueue.length) {
+        selectSong(playbackQueue[queuePos].id, parseInt(queuePos)+1);
+        //retrieve position of song in playlist
+        //get id of the next one
+        //select it
+    }
 }
 
 
@@ -263,7 +282,7 @@ function trackClicked(e) {
     const id = listItem.getAttribute(`data-id`);
 
     console.log(`track "${library[id].title}" selected`);
-    selectSong(id);
+    selectSong(id, listItem.getAttribute(`data-order`));
     console.log(`track "${library[id].title}" loaded into the media element`);
 
 
@@ -309,6 +328,7 @@ function setPlaylist(playlist_id) {
     //highlight the selected playlist
     if(playlist_id === "0") { //the parameter comes in as a string
         getLibraryData()
+            .then(()=> currentPlaylist = Object.values(library).map(item=>item))
             .then(()=> populateTracklist(Object.values(library))); // "All Tracks, i.e. library, is a special case..."
     } else {
         getPlaylistById(playlist_id);
@@ -378,7 +398,7 @@ function populateTracklist(tracks) {
         { tracks: tracks.map((song, i) => {
             return {
                 id: song.id,
-                order: (i+1) + ".",
+                order: (i+1),
                 title: song.title,
                 duration: minutify(song.duration)
             }})
@@ -403,7 +423,7 @@ function minutify(seconds) {
 }
 
 //selects song from the library by its unique id and inserts it into the <audio> element
-function selectSong(id) {
+function selectSong(id, order) {
     console.log(`selecting song with id ${id}`);
 
     //set audio element src
@@ -423,6 +443,15 @@ function selectSong(id) {
     searchBar.setAttribute(`max`, library[id].duration)
 
     PlayPauseIconSwitch();
+
+    //set up queue in case of playing
+    console.log(`setting up queue from current playlist:`);
+    console.log(currentPlaylist);
+    playbackQueue = currentPlaylist.map(item => item);
+    queuePos = order || 1;
+    console.log(`queue position: ${queuePos}`)
+    console.log(`previous song: ${(queuePos>1)? playbackQueue[queuePos-2].title : "none"}`);
+    console.log(`next song: ${(queuePos<playbackQueue.length)? playbackQueue[queuePos].title : "none"}`);
 
     //ensure logic is linked: add to playlist, set-unset favourite
     //update search bar parameters:

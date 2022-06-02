@@ -12,10 +12,9 @@ const express = require(`express`);
 const app = express();
 
 const db = require(`./db`);
-const { connection } = require("./db");
 
 //scan library so we know what to work with
-scanLibrary(PATH_TO_LIBRARY);
+scanLibrary(PATH_TO_LIBRARY); //TODO - some more elegant solution... preferably one that doesn't wipe clean the playlists
 
 //routes
 //playlist routes?
